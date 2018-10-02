@@ -43,7 +43,7 @@ struct trait {
 //level of classification. Will be used in swtich cases
 typedef enum taxa_level {
 	DOMAIN = 0, PHYLUM, CLASS, ORDER, FAMILY, GENUS, SPECIES
-}
+}taxa_level;
 
 
 //global variables
@@ -115,19 +115,39 @@ struct classification* search_by_name(struct classification* sibling_linked_list
 
 }
 
+struct classification* find_spot(char* name, struct classification* head_of_list){
+	//return the pointer to the node before the location the name should be inserted. return 0 if list empty
+	if(head_of_list == 0){return 0;}	//list is empty
+	if(head_of_list->next == 0)(return head_of_list;)	//reached end of list
+	if(strcmp(name, head_of_list->next->name) > 0){return head_of_list;} //name should be inserted after head_of_list
 
-int add_member(char* member_name, taxa_level test_taxa, char* parent_name) {
+	return (find_spot(head_of_list->next));				//recursively search the rest of the list
+}
+
+//called with mkmeme in commands function
+int add_member(char* member_name, taxa_level test_taxa) {
 	
 
 	if(cwt->taxa == test_taxa){ //test to see if in correct level of file structure
-		search_by_name(cwt->members, member_name);
-	}
-	search_by_name()
+		if(!search_by_name(cwt->members, member_name)){		//name not yet in members
+			struct classification* insert_location = find_spot(member_name, cwt);
 
-	/*
-	searches the members of classification named parent_name
-	creates a classification with the given name
-	*/
+			if(!insert_location){ //member list is empty
+				cwt->members = (struct classification*) malloc(sizeof(struct classification));
+				strcpy(cwt->members->name, member_name);
+				cwt->members->next = NULL;
+			}
+			else{
+				insert_location->next = (struct classification*) malloc(sizeof(struct classification));
+				strcpy(location->next->name, member_name);
+				location->next->next = NULL;
+			}
+
+			return 1;
+		}
+		return 0;	//name already in members
+	}
+
 	return 0; //not added successfully
 }
 
